@@ -1,0 +1,7 @@
+#ifndef CONTRATACION_H_INCLUDED
+#define CONTRATACION_H_INCLUDED
+
+#include "Fecha.h"
+
+
+#endif // CONTRATACION_H_INCLUDED
