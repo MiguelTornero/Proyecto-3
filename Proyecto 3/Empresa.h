@@ -84,7 +84,7 @@ void Empresa::muestra(){
 }
 
 double Empresa::calculaCosto(int diasDuracion){
-    diasDuracion %= 30;
+    diasDuracion /= 30;
     if (cantPersonas > 200){
         return (cantPersonas - 200) * adicional + costoXMes * diasDuracion;
     }
