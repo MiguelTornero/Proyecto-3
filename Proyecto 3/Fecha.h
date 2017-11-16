@@ -60,26 +60,26 @@ void Fecha::setAnio(int anio) {
 //Sobrecarga +
 Fecha Fecha::operator + (int dias) {
     int d, m, a, meses[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    
+
     d = dia + dias;
     m = mes;
     a = anio;
-    
+
     for (int i = 0; d > meses[m-1]; i++) {
         //Valida si el año es bisiesto y si es así agrega un día más a el mes de febrero
         if (a % 4 == 0 && (a % 100 != 0 || a % 400 == 0)) {
             meses[1]++;
         }
-        
+
         d -= meses[m-1];
         m++;
-        
+
         if(m == 13) {
             a++;
             m = 1;
         }
     }
-    
+
     Fecha nuevaFecha(d, m, a);
     return nuevaFecha;
 }
@@ -92,23 +92,29 @@ ostream& operator << (ostream &salida, Fecha fecha) {
 istream& operator >> (istream &entrada, Fecha& fecha) {
     int d, m , a, maxD = 0;
     bool bisiesto = false;
-    
+
     cout << "Año:";
     entrada >> a;
-    
+
     if (a > 0) {
         fecha.anio = a;
         if (a % 4 == 0 && (a % 100 != 0 || a % 400 == 0))
             bisiesto = true;
-        
+
         cout << "Mes:";
         entrada >> m;
-        
+
         if (m <= 12 &&  m > 0) {
             fecha.mes = m;
-            
+
             switch (m) {
                 case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
                     maxD = 31;
                     break;
                 case 2:
@@ -116,48 +122,24 @@ istream& operator >> (istream &entrada, Fecha& fecha) {
                         maxD = 29;
                     else maxD = 28;
                     break;
-                case 3:
-                    maxD = 31;
-                    break;
                 case 4:
-                    maxD = 30;
-                    break;
-                case 5:
-                    maxD = 31;
-                    break;
                 case 6:
-                    maxD = 30;
-                    break;
-                case 7:
-                    maxD = 31;
-                    break;
-                case 8:
-                    maxD = 31;
-                    break;
                 case 9:
-                    maxD = 30;
-                    break;
-                case 10:
-                    maxD = 31;
-                    break;
                 case 11:
                     maxD = 30;
-                    break;
-                case 12:
-                    maxD = 31;
                     break;
                 default:
                     break;
             }
             cout << "Día:";
             entrada >> d;
-            
+
             if (d <= maxD && d > 0) {
                 fecha.dia = d;
             } else cout << "Error. Día invalido\n";
         } else cout << "Error. Mes invalido.\n";
     } else cout << "Error. Año invalido\n";
-    
+
     return entrada;
 }
 #endif // FECHA_H_INCLUDED
