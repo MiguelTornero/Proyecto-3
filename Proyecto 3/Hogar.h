@@ -49,7 +49,7 @@ string Hogar::getDescripcion(){
 
 void Hogar::muestra(){
     cout << "Servicio: Hogar";
-    cout << "\nClave:" << clave;
+    cout << "\nClave: " << clave;
     cout << "\nTipo: " << tipo;
     cout << "\nCosto por dia: " << costoXDia;
     cout << "\nDescripcion: " << descripcion << endl;
