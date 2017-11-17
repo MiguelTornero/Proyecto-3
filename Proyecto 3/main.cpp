@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "Fecha.h"
+#include "Contratacion.h"
 #include "Empresa.h"
 #include "Hogar.h"
 
