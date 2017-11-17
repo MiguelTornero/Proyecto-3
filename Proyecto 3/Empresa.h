@@ -75,7 +75,7 @@ double Empresa::getAdicional(){
 
 void Empresa::muestra(){
     cout << "Servicio: Empresa";
-    cout << "\nClave: " << clave;
+    cout << "\nClave:" << clave;
     cout << "\nTipo: " << tipo;
     cout << "\nCosto por mes: " << costoXMes;
     cout << "\nCantidad de personas: " << cantPersonas;
