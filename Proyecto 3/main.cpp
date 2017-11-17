@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "Fecha.h"
+#include "Contratacion.h"
 #include "Empresa.h"
 #include "Hogar.h"
 
@@ -44,9 +44,6 @@ int cargarServicios(Servicio *servicios[], int tam){
         }
     }
     inputFile.close();
-    if (inputFile.fail()){
-        return -1;
-    }
     return counter;
 }
 
