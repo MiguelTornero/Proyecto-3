@@ -27,7 +27,7 @@ private:
 };
 //Constuctores
 Contratacion::Contratacion() { //Default
-    clave = "Sin clave";
+    clave = "N/A";
     idCliente = 0;
     fechaContrato = Fecha();
     diasDuracion = 0;
