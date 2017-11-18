@@ -20,12 +20,43 @@ void consultaServicios(Servicio **servicios, int tam){
         servicios[i]->muestra();
         cout << endl;
     }
-    cout << "Presione cualquier tecla para regresar al menu..." << flush;
+    cout << "\nPresione Enter para regresar al menu..." << flush;
     cin.sync();
     cin.get();
 }
 
-void consultaContrataciones(){}
+void consultaContrataciones(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
+    bool found = false;
+    int indexServicio;
+
+    cout << "Mostrando la lista de contrataciones:" << endl;
+    for (int i = 0; i < totalContrataciones; i++){
+        for (int j = 0; j < totalServicios && !found; j++){
+            if (contrataciones[i].getClave() == servicios[j]->getClave())
+            {
+                found = true;
+                indexServicio = j;
+            }
+        }
+        if (found){
+            cout << "\n*INFORMACION DEL SERVICIO*" << endl;
+            servicios[indexServicio]->muestra();
+        }
+        else{
+            cout << "Servicio no encontrado." << endl;
+        }
+        cout << "*INFORMACION DE LA CONTRATACION*";
+        cout << "\nID del cliente: " << contrataciones[i].getIdCliente();
+        cout << "\nFecha de contratacion: " << contrataciones[i].getFechaContrato();
+        cout << "\nFecha de terminacion: " << contrataciones[i].calcularFinContrato() << endl;
+        if(found){
+            cout << "Costo: " << servicios[indexServicio]->calculaCosto(contrataciones[i].getDiasDuracion()) << endl;
+        }
+    }
+    cout << "\nPresione Enter para regresar al menu..." << flush;
+    cin.sync();
+    cin.get();
+}
 
 void consultaContServicio(){}
 
@@ -35,15 +66,17 @@ void hacerContratacion(){}
 
 char menuOpciones(){
     char opcion;
-
-    cout << "Selecciona la opcion deseada:" << endl
-         << "\nA. Consultar la lista de servicios."
-         << "\nB. Consultar la lista de contrataciones."
-         << "\nC. Consultar las contrataciones de un servicio dado."
-         << "\nD. Consulta las contrataciones de una fecha especifica."
-         << "\nE. Hacer una contratacion."
-         << "\nF. Terminar el programa." << endl;
-    cin.sync();
+    cout << "\nElige una opción del menú\n"
+    << "-------------------------------------------\n"
+    << "|                   Menú                  |\n"
+    << "-------------------------------------------\n"
+    << "A) Consultar la lista de servicios\n"
+    << "B) Consultar la lista de contrataciones\n"
+    << "C) Consultar las contrataciones de un servicio dado\n"
+    << "D) Consulta las contrataciones de una fecha específica\n"
+    << "E) Hacer una contratación\n"
+    << "F) Terminar el programa\n"
+    << "-------------------------------------------\n";
     cin >> opcion;
     return opcion;
 }
@@ -80,6 +113,36 @@ int cargarServicios(Servicio *servicios[], int tam){
     return counter;
 }
 
+int cargarContrataciones(Contratacion contrataciones[], int tam) {
+    ifstream datosContratacion;
+    datosContratacion.open("Contratacion.txt");
+
+    string clave;
+    int idCliente, diasDuracion, dia, mes, anio, counter = 0;
+    Fecha fechaContrato;
+
+    for (int i = 0; i < tam && !datosContratacion.eof(); i++) {
+        datosContratacion >> clave;
+        datosContratacion >> idCliente;
+        datosContratacion >> dia;
+        datosContratacion >> mes;
+        datosContratacion >> anio;
+        datosContratacion >> diasDuracion;
+
+        fechaContrato.setDia(dia);
+        fechaContrato.setMes(mes);
+        fechaContrato.setAnio(anio);
+        contrataciones[i].setClave(clave);
+        contrataciones[i].setIdCliente(idCliente);
+        contrataciones[i].setFechaContrato(fechaContrato);
+        contrataciones[i].setDiasDuracion(diasDuracion);
+        counter++;
+    }
+
+    datosContratacion.close();
+    return counter;
+}
+
 int main()
 {
     const int maxServicios = 10, maxContrataciones = 20;
@@ -90,38 +153,46 @@ int main()
 
     totalServicios = cargarServicios(servicios, maxServicios);
 
+    totalContrataciones = cargarContrataciones(contrataciones, maxContrataciones);
+
     do{
         opcion = menuOpciones();
 
         switch (opcion){
         case 'a':
         case 'A':
+        case '1':
             consultaServicios(servicios, totalServicios);
             break;
         case 'b':
         case 'B':
-            consultaContrataciones();
+        case '2':
+            consultaContrataciones(contrataciones, totalContrataciones, servicios, totalServicios);
             break;
         case 'c':
         case 'C':
+        case '3':
             consultaContServicio();
             break;
         case 'd':
         case 'D':
+        case '4':
             consultaContFecha();
             break;
         case 'e':
         case 'E':
+        case '5':
             hacerContratacion();
             break;
         case 'f':
         case 'F':
+        case '6':
             cout << "Terminando el programa..." << endl;
             break;
         default:
             cout << "Opcion no valida. Intente otra vez." << endl;
         }
     }
-    while (opcion != 'F' && opcion != 'f' && !cin.fail());
+    while (opcion != 'F' && opcion != 'f' && opcion != '6' && !cin.fail());
     return 0;
 }
