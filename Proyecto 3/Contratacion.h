@@ -27,7 +27,7 @@ private:
 };
 //Constuctores
 Contratacion::Contratacion() { //Default
-    clave = "Sin clave";
+    clave = "N/A";
     idCliente = 0;
     fechaContrato = Fecha();
     diasDuracion = 0;
@@ -65,7 +65,11 @@ void Contratacion::setDiasDuracion(int diasDuracion) {
 }
 //Método
 Fecha Contratacion::calcularFinContrato() {
+<<<<<<< HEAD
     Fecha nuevaContratacion = fechaContrato + diasDuracion;;
     return nuevaContratacion;
+=======
+    return fechaContrato + diasDuracion;
+>>>>>>> master
 }
 #endif // CONTRATACION_H_INCLUDED
