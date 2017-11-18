@@ -65,7 +65,7 @@ void Contratacion::setDiasDuracion(int diasDuracion) {
 }
 //Método
 Fecha Contratacion::calcularFinContrato() {
-    
-    return <#expression#>
+    Fecha nuevaContratacion = fechaContrato + diasDuracion;;
+    return nuevaContratacion;
 }
 #endif // CONTRATACION_H_INCLUDED
