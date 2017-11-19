@@ -19,6 +19,8 @@ public:
     void setAnio(int anio);
     //Sobrecarga +
     Fecha operator + (int dias);
+    //Sobrecarga ==
+    bool operator == (Fecha fecha);
     //Sobrecarga <<
     friend ostream& operator << (ostream &salida, Fecha fecha);
     //Sobreecarga >>
@@ -84,6 +86,12 @@ Fecha Fecha::operator + (int dias) {
 
     Fecha nuevaFecha(d, m, a);
     return nuevaFecha;
+}
+//Sobrecarga ==
+bool Fecha::operator == (Fecha fecha) {
+    if (fecha.dia == dia && fecha.mes == mes && fecha.anio == anio) {
+        return true;
+    } else return false;
 }
 //Sobrecarga <<
 ostream& operator << (ostream &salida, Fecha fecha) {

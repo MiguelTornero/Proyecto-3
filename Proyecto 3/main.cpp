@@ -10,6 +10,7 @@
 #include "Contratacion.h"
 #include "Empresa.h"
 #include "Hogar.h"
+#include "Fecha.h"
 
 using namespace std;
 
@@ -103,7 +104,23 @@ void consultaContServicio(Contratacion *contrataciones, int totalContrataciones,
     cin.get();
 }
 
-void consultaContFecha(){}
+void consultaContFecha(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios){
+    Fecha fecha;
+    bool foundContratacion;
+    int indexServicio;
+    
+    cout << "Dame la fecha" << endl;
+    cin.sync();
+    cin >> fecha;
+    
+    for (int i = 0; i < totalContrataciones && !foundContratacion; i++){
+        if (contrataciones[i].getFechaContrato() == fecha){
+            servicios[i]->muestra();
+            indexServicio = i;
+            foundContratacion = true;
+        }
+    }
+}
 
 bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     int idCliente, diasDuracion, indexServicio;
@@ -323,7 +340,7 @@ int main()
         case 'd':
         case 'D':
         case '4':
-            consultaContFecha();
+            consultaContFecha(contrataciones, totalContrataciones, servicios);
             break;
         case 'e':
         case 'E':
