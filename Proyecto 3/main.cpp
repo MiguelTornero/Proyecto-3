@@ -34,20 +34,20 @@ void consultaContrataciones(Contratacion *contrataciones, int totalContratacione
     cout << "Mostrando la lista de contrataciones:" << endl;
     for (int i = 0; i < totalContrataciones; i++){
         for (int j = 0; j < totalServicios && !found; j++){
-            if (contrataciones[i].getClave() == servicios[j]->getClave())
-            {
+            if (contrataciones[i].getClave() == servicios[j]->getClave()){
                 found = true;
                 indexServicio = j;
             }
         }
+        cout << "\n\n\nContratacion #" << i + 1 << ":\n" << endl;
         if (found){
-            cout << "\n*INFORMACION DEL SERVICIO*" << endl;
+            cout << "*INFORMACION DEL SERVICIO*" << endl;
             servicios[indexServicio]->muestra();
         }
         else{
-            cout << "Servicio no encontrado." << endl;
+            cout << "No se encontro ningun servicio con clave " << contrataciones[i].getClave() << endl;
         }
-        cout << "*INFORMACION DE LA CONTRATACION*";
+        cout << "\n*INFORMACION DE LA CONTRATACION*";
         cout << "\nID del cliente: " << contrataciones[i].getIdCliente();
         cout << "\nFecha de contratacion: " << contrataciones[i].getFechaContrato();
         cout << "\nFecha de terminacion: " << contrataciones[i].calcularFinContrato() << endl;
@@ -60,7 +60,47 @@ void consultaContrataciones(Contratacion *contrataciones, int totalContratacione
     cin.get();
 }
 
-void consultaContServicio(){}
+void consultaContServicio(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
+    bool foundContratacion = false, foundServicio = false;
+    int indexServicio;
+    string clave;
+
+    cout << "Dame la clave del servicio:" << endl;
+    cin.sync();
+    cin >> clave;
+
+    for (int i = 0; i < totalServicios && !foundServicio; i++){
+        if (servicios[i]->getClave() == clave){
+            indexServicio = i;
+            foundServicio = true;
+        }
+    }
+
+    cout << "\nDatos del servicio:\n" << endl;
+    if (foundServicio){
+        servicios[indexServicio]->muestra();
+    }
+    else{
+        cout << "No se encontro ningun servicio con clave " << clave << endl;
+    }
+
+    cout << "\nDatos de las contrataciones del servicio:" << endl;
+    for (int i = 0; i < totalContrataciones; i++){
+        if (contrataciones[i].getClave() == clave){
+            foundContratacion = true;
+            cout << "\nContratacion #" << i + 1;
+            cout << "\nID del cliente: " << contrataciones[i].getIdCliente();
+            cout << "\nFecha de contratacion: " << contrataciones[i].getFechaContrato();
+            cout << "\nFecha de terminacion: " << contrataciones[i].calcularFinContrato() << endl;
+        }
+    }
+    if (!foundContratacion){
+        cout << "\nNo se encontro ninguna contratacion con clave " << clave << endl;
+    }
+    cout << "\nPresione Enter para regresar al menu..." << flush;
+    cin.sync();
+    cin.get();
+}
 
 void consultaContFecha(){}
 
@@ -68,7 +108,7 @@ void hacerContratacion(){}
 
 char menuOpciones(){
     char opcion;
-    cout << "\nElige una opción del menú\n"
+    cout << "\nElija una opción del menú\n"
     << "-------------------------------------------\n"
     << "|                   Menú                  |\n"
     << "-------------------------------------------\n"
@@ -86,29 +126,29 @@ char menuOpciones(){
 
 int cargarServicios(Servicio *servicios[]){
     ifstream inputFile;
-    int inInt, counter = 0;
-    double inDouble1, inDouble2;
-    char inChar;
-    string inString1, inString2, auxString;
+    int cantPersonas, counter = 0;
+    double costo, adicional;
+    char tipo;
+    string clave, descripcion, auxString;
 
     inputFile.open("Servicios.txt");
 
     for (int i = 0; i < MAX_SERVICIOS && !inputFile.eof(); i++){
-        inputFile >> inString1 >> inChar >> inDouble1;
-        if (inputFile >> inInt){
-            inputFile >> inString2;
-            while (!(inputFile >> inDouble2)){
+        inputFile >> clave >> tipo >> costo;
+        if (inputFile >> cantPersonas){
+            inputFile >> descripcion;
+            while (!(inputFile >> adicional)){
                 inputFile.clear();
                 inputFile >> auxString;
-                inString2 += ' ' + auxString;
+                descripcion += ' ' + auxString;
             }
-            servicios[i] = new Empresa(inString1, inChar, inDouble1, inInt, inString2, inDouble2);
+            servicios[i] = new Empresa(clave, tipo, costo, cantPersonas, descripcion, adicional);
             counter++;
         }
         else{
             inputFile.clear();
-            getline(inputFile, inString2);
-            servicios[i] = new Hogar(inString1, inChar, inDouble1, inString2);
+            getline(inputFile, descripcion);
+            servicios[i] = new Hogar(clave, tipo, costo, descripcion);
             counter++;
         }
     }
@@ -174,7 +214,7 @@ int main()
         case 'c':
         case 'C':
         case '3':
-            consultaContServicio();
+            consultaContServicio(contrataciones, totalContrataciones, servicios, totalServicios);
             break;
         case 'd':
         case 'D':
