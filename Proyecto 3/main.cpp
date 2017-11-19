@@ -13,6 +13,8 @@
 
 using namespace std;
 
+const int MAX_CONTRATACIONES = 20, MAX_SERVICIOS = 10;
+
 void consultaServicios(Servicio **servicios, int tam){
     cout << "Mostrando la lista de servicios:\n" << endl;
     for (int i = 0; i < tam; i++)
@@ -82,7 +84,7 @@ char menuOpciones(){
     return opcion;
 }
 
-int cargarServicios(Servicio *servicios[], int tam){
+int cargarServicios(Servicio *servicios[]){
     ifstream inputFile;
     int inInt, counter = 0;
     double inDouble1, inDouble2;
@@ -91,7 +93,7 @@ int cargarServicios(Servicio *servicios[], int tam){
 
     inputFile.open("Servicios.txt");
 
-    for (int i = 0; i < tam && !inputFile.eof(); i++){
+    for (int i = 0; i < MAX_SERVICIOS && !inputFile.eof(); i++){
         inputFile >> inString1 >> inChar >> inDouble1;
         if (inputFile >> inInt){
             inputFile >> inString2;
@@ -114,7 +116,7 @@ int cargarServicios(Servicio *servicios[], int tam){
     return counter;
 }
 
-int cargarContrataciones(Contratacion contrataciones[], int tam) {
+int cargarContrataciones(Contratacion contrataciones[]) {
     ifstream datosContratacion;
     datosContratacion.open("Contratacion.txt");
 
@@ -122,7 +124,7 @@ int cargarContrataciones(Contratacion contrataciones[], int tam) {
     int idCliente, diasDuracion, dia, mes, anio, counter = 0;
     Fecha fechaContrato;
 
-    for (int i = 0; i < tam && !datosContratacion.eof(); i++) {
+    for (int i = 0; i < MAX_CONTRATACIONES && !datosContratacion.eof(); i++) {
         datosContratacion >> clave;
         datosContratacion >> idCliente;
         datosContratacion >> dia;
@@ -146,15 +148,14 @@ int cargarContrataciones(Contratacion contrataciones[], int tam) {
 
 int main()
 {
-    const int maxServicios = 10, maxContrataciones = 20;
     int totalServicios, totalContrataciones;
     char opcion;
-    Servicio *servicios[maxServicios];
-    Contratacion contrataciones[maxContrataciones];
+    Servicio *servicios[MAX_SERVICIOS];
+    Contratacion contrataciones[MAX_CONTRATACIONES];
 
-    totalServicios = cargarServicios(servicios, maxServicios);
+    totalServicios = cargarServicios(servicios);
 
-    totalContrataciones = cargarContrataciones(contrataciones, maxContrataciones);
+    totalContrataciones = cargarContrataciones(contrataciones);
 
     do{
         opcion = menuOpciones();
