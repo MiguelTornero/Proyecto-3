@@ -29,9 +29,9 @@ private:
 
 //Constructores
 Fecha::Fecha() { //Default
-    dia = 0;
-    mes = 0;
-    anio = 0;
+    dia = 1;
+    mes = 1;
+    anio = 1;
 }
 Fecha::Fecha(int dia, int mes, int anio) {
     this-> dia = dia;
