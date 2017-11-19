@@ -104,7 +104,85 @@ void consultaContServicio(Contratacion *contrataciones, int totalContrataciones,
 
 void consultaContFecha(){}
 
-void hacerContratacion(){}
+bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
+    int idCliente, diasDuracion, indexServicio;
+    bool foundClave = false, isEmpresa = false, success = false;
+    char answer;
+    string clave;
+    Fecha fechaContrato;
+    Contratacion contrato;
+
+    if (totalContrataciones < MAX_CONTRATACIONES){
+        cout << "Dame el ID del cliente:" << endl;
+        cin >> idCliente;
+
+        while (!foundClave && !cin.fail()){
+            cout << "Dame la clave del servicio:" << endl;
+            cin >> clave;
+            for (int i = 0; i < totalServicios && !foundClave; i++){
+                if (servicios[i]->getClave() == clave){
+                    foundClave = true;
+                    indexServicio = i;
+                }
+            }
+            if (!foundClave){
+                cout << "No se encontro ningun servicio con clave " << clave << ". Intente otra vez." << endl;
+            }
+        }
+
+        if (servicios[indexServicio]->getTipo() == 'I' || servicios[indexServicio]->getTipo() == 'C'  || servicios[indexServicio]->getTipo() == 'R'){
+            isEmpresa = true;
+        }
+
+        cout << "Dame la fecha de contratacion:" << endl;
+        cin >> fechaContrato;
+
+        cout << "Dame los dias que deseas contratar el servicio:" << endl;
+        cin >> diasDuracion;
+
+        if (isEmpresa && diasDuracion < 30){
+            cout << "Este servicio se contrata con minimo de un mes (30 dias). ¿Esta de acuerdo con eso? (Y/N)" << endl;
+            cin.sync();
+            cin >> answer;
+            switch (answer){
+            case 'Y':
+            case 'y':
+            case 'S':
+            case 's':
+                diasDuracion = 30;
+                success = true;
+                break;
+            default:
+                cout << "Cancelando la contratacion..." << endl;
+            }
+        }
+        else{
+            if (diasDuracion > 0){
+                success = true;
+            }
+            else{
+                cout << "La cantidad de dia debe ser mayor que cero." << endl;
+            }
+        }
+        if (success){
+            contrato.setClave(clave);
+            contrato.setIdCliente(idCliente);
+            contrato.setFechaContrato(fechaContrato);
+            contrato.setDiasDuracion(diasDuracion);
+            contrataciones[totalContrataciones] = contrato;
+            cout << "Se ha hecho una contratacion exitosa con un costo de: " << servicios[indexServicio]->calculaCosto(diasDuracion) << endl;
+        }
+        else{
+            cout << "No se hizo la contratacion." << endl;
+        }
+    }
+    else{
+        cout << "No hay espacio para mas contrataciones. (max. " << MAX_CONTRATACIONES << ")." << endl;
+    }
+    return success;
+}
+
+void actualizarContrataciones(){}
 
 char menuOpciones(){
     char opcion;
@@ -118,7 +196,7 @@ char menuOpciones(){
     << "D) Consulta las contrataciones de una fecha específica\n"
     << "E) Hacer una contratación\n"
     << "F) Terminar el programa\n"
-    << "-------------------------------------------\n";
+    << "-------------------------------------------" << endl;
     cin.sync();
     cin >> opcion;
     return opcion;
@@ -224,11 +302,12 @@ int main()
         case 'e':
         case 'E':
         case '5':
-            hacerContratacion();
+            hacerContratacion(contrataciones, totalContrataciones, servicios, totalServicios);
             break;
         case 'f':
         case 'F':
         case '6':
+            actualizarContrataciones();
             cout << "Terminando el programa..." << endl;
             break;
         default:
