@@ -7,24 +7,6 @@
 #include <iostream>
 #include <fstream>
 
-<<<<<<< HEAD
-#include "Fecha.h"
-#include "Contratacion.h"
-#include "Servicio.h"
-
-using namespace std;
-
-//Carga los datos de los archivos
-void cargarContrataciones(Contratacion contrataciones[]) {
-    ifstream datosContratacion;
-    datosContratacion.open("Contratacion.txt");
-    
-    string clave;
-    int idCliente, diasDuracion, dia, mes, anio;
-    Fecha fechaContrato;
-    
-    for (int i = 0; i < 2 && !datosContratacion.eof(); i++) {
-=======
 #include "Contratacion.h"
 #include "Empresa.h"
 #include "Hogar.h"
@@ -45,7 +27,7 @@ void consultaServicios(Servicio **servicios, int tam){
 
 void consultaContrataciones(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     bool found = false;
-    int indexServicio;
+    int indexServicio = 0;
 
     cout << "Mostrando la lista de contrataciones:" << endl;
     for (int i = 0; i < totalContrataciones; i++){
@@ -84,15 +66,15 @@ void hacerContratacion(){}
 
 char menuOpciones(){
     char opcion;
-    cout << "\nElige una opción del menú\n"
+    cout << "\nElige una opci—n del menœ\n"
     << "-------------------------------------------\n"
-    << "|                   Menú                  |\n"
+    << "|                   Menœ                  |\n"
     << "-------------------------------------------\n"
     << "A) Consultar la lista de servicios\n"
     << "B) Consultar la lista de contrataciones\n"
     << "C) Consultar las contrataciones de un servicio dado\n"
-    << "D) Consulta las contrataciones de una fecha específica\n"
-    << "E) Hacer una contratación\n"
+    << "D) Consult a las contrataciones de una fecha específica\n"
+    << "E) Hacer una contrataci—n\n"
     << "F) Terminar el programa\n"
     << "-------------------------------------------\n";
     cin >> opcion;
@@ -140,76 +122,26 @@ int cargarContrataciones(Contratacion contrataciones[], int tam) {
     Fecha fechaContrato;
 
     for (int i = 0; i < tam && !datosContratacion.eof(); i++) {
->>>>>>> master
+
         datosContratacion >> clave;
         datosContratacion >> idCliente;
         datosContratacion >> dia;
         datosContratacion >> mes;
         datosContratacion >> anio;
         datosContratacion >> diasDuracion;
-<<<<<<< HEAD
+
         
         fechaContrato = {dia, mes, anio};
-=======
 
         fechaContrato.setDia(dia);
         fechaContrato.setMes(mes);
         fechaContrato.setAnio(anio);
->>>>>>> master
         contrataciones[i].setClave(clave);
         contrataciones[i].setIdCliente(idCliente);
         contrataciones[i].setFechaContrato(fechaContrato);
         contrataciones[i].setDiasDuracion(diasDuracion);
-<<<<<<< HEAD
+
     }
-    
-    datosContratacion.close();
-}
-
-//Muestra el menÃº
-void muestraMenu() {
-    cout << "\nElige una opciÃ³n del menÃº\n"
-    << "-------------------------------------------\n"
-    << "|                   MenÃº                  |\n"
-    << "-------------------------------------------\n"
-    << "1) Consultar la lista de Servicios\n"
-    << "2) Consultar la lista de contrataciones\n"
-    << "3) Consultar las contrataciones de un servicio dado\n"
-    << "4) Consulta las contrataciones de una fecha especÃ­fica\n"
-    << "5) Hacer una contrataciÃ³n,\n"
-    << "6) Terminar\n"
-    << "-------------------------------------------\n";
-}
-
-
-int main()
-{
-    Fecha fecha1;
-    Servicio *servicios[10];
-    Contratacion contrataciones[20];
-    
-    
-//    ifstream arch1;
-//    string x;
-//
-//    arch1.open("Servicios.txt");
-//
-//    for (int i = 0; i < 7 ;i++) {
-//        arch1 >> x;
-//        cout << x << endl;
-//    }
-//
-//    arch1.close();
-    
-    cin >> fecha1;
-    cout << fecha1 << endl;
-    Contratacion contratacion("f34", 21, fecha1, 10);
-    cout << contratacion.calcularFinContrato();
-    
-=======
-        counter++;
-    }
-
     datosContratacion.close();
     return counter;
 }
@@ -265,6 +197,6 @@ int main()
         }
     }
     while (opcion != 'F' && opcion != 'f' && opcion != '6' && !cin.fail());
->>>>>>> master
+
     return 0;
 }
