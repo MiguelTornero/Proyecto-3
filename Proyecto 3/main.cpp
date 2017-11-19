@@ -77,6 +77,7 @@ char menuOpciones(){
     << "E) Hacer una contratación\n"
     << "F) Terminar el programa\n"
     << "-------------------------------------------\n";
+    cin.sync();
     cin >> opcion;
     return opcion;
 }
