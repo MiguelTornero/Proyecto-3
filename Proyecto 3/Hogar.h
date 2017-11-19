@@ -51,7 +51,7 @@ void Hogar::muestra(){
     cout << "Servicio: Hogar";
     cout << "\nClave: " << clave;
     cout << "\nTipo: " << tipo;
-    cout << "\nCosto por dia: " << costoXDia;
+    cout << "\nCosto por dia: $" << costoXDia;
     cout << "\nDescripcion: " << descripcion << endl;
 }
 

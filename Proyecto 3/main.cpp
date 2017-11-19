@@ -28,11 +28,12 @@ void consultaServicios(Servicio **servicios, int tam){
 }
 
 void consultaContrataciones(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
-    bool found = false;
+    bool found;
     int indexServicio;
 
     cout << "Mostrando la lista de contrataciones:" << endl;
     for (int i = 0; i < totalContrataciones; i++){
+        found = false;
         for (int j = 0; j < totalServicios && !found; j++){
             if (contrataciones[i].getClave() == servicios[j]->getClave()){
                 found = true;
@@ -52,7 +53,7 @@ void consultaContrataciones(Contratacion *contrataciones, int totalContratacione
         cout << "\nFecha de contratacion: " << contrataciones[i].getFechaContrato();
         cout << "\nFecha de terminacion: " << contrataciones[i].calcularFinContrato() << endl;
         if(found){
-            cout << "Costo: " << servicios[indexServicio]->calculaCosto(contrataciones[i].getDiasDuracion()) << endl;
+            cout << "Costo: $" << servicios[indexServicio]->calculaCosto(contrataciones[i].getDiasDuracion()) << endl;
         }
     }
     cout << "\nPresione Enter para regresar al menu..." << flush;
@@ -130,7 +131,7 @@ bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Se
             }
         }
 
-        if (servicios[indexServicio]->getTipo() == 'I' || servicios[indexServicio]->getTipo() == 'C'  || servicios[indexServicio]->getTipo() == 'R'){
+        if (servicios[indexServicio]->getTipo() == 'V' || servicios[indexServicio]->getTipo() == 'D'  || servicios[indexServicio]->getTipo() == 'N'){
             isEmpresa = true;
         }
 
@@ -141,7 +142,7 @@ bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Se
         cin >> diasDuracion;
 
         if (isEmpresa && diasDuracion < 30){
-            cout << "Este servicio se contrata con minimo de un mes (30 dias). ¿Esta de acuerdo con eso? (Y/N)" << endl;
+            cout << "Este servicio se contrata con minimo de un mes (30 dias). ¿Esta de acuerdo con esto? (Y/N)" << endl;
             cin.sync();
             cin >> answer;
             switch (answer){
@@ -165,15 +166,29 @@ bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Se
             }
         }
         if (success){
-            contrato.setClave(clave);
-            contrato.setIdCliente(idCliente);
-            contrato.setFechaContrato(fechaContrato);
-            contrato.setDiasDuracion(diasDuracion);
-            contrataciones[totalContrataciones] = contrato;
-            cout << "Se ha hecho una contratacion exitosa con un costo de: " << servicios[indexServicio]->calculaCosto(diasDuracion) << endl;
-        }
-        else{
-            cout << "No se hizo la contratacion." << endl;
+            cout << "Se hara una contratacion con costo de: $" << servicios[indexServicio]->calculaCosto(diasDuracion) << endl;
+            cout << "¿Quiere hacer la contratacion? (Y/N)" << endl;
+            cin.sync();
+            cin >> answer;
+            switch (answer){
+            case 'Y':
+            case 'y':
+            case 'S':
+            case 's':
+                break;
+            default:
+                cout << "Cancelando la contratacion..." << endl;
+                success = false;
+            }
+            if (success){
+                contrato.setClave(clave);
+                contrato.setIdCliente(idCliente);
+                contrato.setFechaContrato(fechaContrato);
+                contrato.setDiasDuracion(diasDuracion);
+                contrataciones[totalContrataciones] = contrato;
+                cout << "Contratacion exitosa." << endl;
+            }
+
         }
     }
     else{
@@ -182,7 +197,19 @@ bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Se
     return success;
 }
 
-void actualizarContrataciones(){}
+void actualizarContrataciones(Contratacion *contrataciones, int total){
+    ofstream outputFile;
+    outputFile.open("Contratacion.txt");
+    for (int i = 0; i < total; i++){
+        outputFile << contrataciones[i].getClave()
+                   << ' ' << contrataciones[i].getIdCliente()
+                   << ' ' << contrataciones[i].getFechaContrato().getDia()
+                   << ' ' << contrataciones[i].getFechaContrato().getMes()
+                   << ' ' << contrataciones[i].getFechaContrato().getAnio()
+                   << ' ' << contrataciones[i].getDiasDuracion() << endl;
+    }
+    outputFile.close();
+}
 
 char menuOpciones(){
     char opcion;
@@ -211,10 +238,10 @@ int cargarServicios(Servicio *servicios[]){
 
     inputFile.open("Servicios.txt");
 
-    for (int i = 0; i < MAX_SERVICIOS && !inputFile.eof(); i++){
-        inputFile >> clave >> tipo >> costo;
-        if (inputFile >> cantPersonas){
-            inputFile >> descripcion;
+    for (int i = 0; i < MAX_SERVICIOS && inputFile >> clave; i++){
+        inputFile >> tipo >> costo;
+        if (tipo == 'V' || tipo == 'D' || tipo == 'N'){
+            inputFile >> cantPersonas >> descripcion;
             while (!(inputFile >> adicional)){
                 inputFile.clear();
                 inputFile >> auxString;
@@ -224,7 +251,7 @@ int cargarServicios(Servicio *servicios[]){
             counter++;
         }
         else{
-            inputFile.clear();
+            inputFile.ignore();
             getline(inputFile, descripcion);
             servicios[i] = new Hogar(clave, tipo, costo, descripcion);
             counter++;
@@ -242,8 +269,7 @@ int cargarContrataciones(Contratacion contrataciones[]) {
     int idCliente, diasDuracion, dia, mes, anio, counter = 0;
     Fecha fechaContrato;
 
-    for (int i = 0; i < MAX_CONTRATACIONES && !datosContratacion.eof(); i++) {
-        datosContratacion >> clave;
+    for (int i = 0; i < MAX_CONTRATACIONES && datosContratacion >> clave; i++) {
         datosContratacion >> idCliente;
         datosContratacion >> dia;
         datosContratacion >> mes;
@@ -309,8 +335,9 @@ int main()
         case 'f':
         case 'F':
         case '6':
-            actualizarContrataciones();
-            cout << "Terminando el programa..." << endl;
+            cout << "Actualizando contrataciones..." << endl;
+            actualizarContrataciones(contrataciones, totalContrataciones);
+            cout << "Contratacion.txt fue actualizada. Terminando el programa..." << endl;
             break;
         default:
             cout << "Opcion no valida. Intente otra vez." << endl;
