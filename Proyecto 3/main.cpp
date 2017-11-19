@@ -302,7 +302,9 @@ int main()
         case 'e':
         case 'E':
         case '5':
-            hacerContratacion(contrataciones, totalContrataciones, servicios, totalServicios);
+            if (hacerContratacion(contrataciones, totalContrataciones, servicios, totalServicios)){
+                totalContrataciones++;
+            }
             break;
         case 'f':
         case 'F':
