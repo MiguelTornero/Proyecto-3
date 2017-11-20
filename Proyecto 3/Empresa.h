@@ -77,18 +77,15 @@ void Empresa::muestra(){
     cout << "Servicio: Empresa";
     cout << "\nClave: " << clave;
     cout << "\nTipo: " << tipo;
-    cout << "\nCosto por mes: " << costoXMes;
+    cout << "\nCosto por mes: $" << costoXMes;
     cout << "\nCantidad de personas: " << cantPersonas;
     cout << "\nDescripcion: " << descripcion;
-    cout << "\nAdicional: " << adicional << endl;
+    cout << "\nAdicional: $" << adicional << endl;
 }
 
 double Empresa::calculaCosto(int diasDuracion){
     int mesesDuracion;
     mesesDuracion = diasDuracion / 30;
-    if(diasDuracion % 30 > 0){
-        mesesDuracion++;
-    }
     if (cantPersonas > 200){
         return (cantPersonas - 200) * adicional + costoXMes * mesesDuracion;
     }
