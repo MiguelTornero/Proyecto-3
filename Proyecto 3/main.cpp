@@ -10,7 +10,6 @@
 #include "Contratacion.h"
 #include "Empresa.h"
 #include "Hogar.h"
-#include "Fecha.h"
 
 using namespace std;
 
@@ -104,22 +103,48 @@ void consultaContServicio(Contratacion *contrataciones, int totalContrataciones,
     cin.get();
 }
 
-void consultaContFecha(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios){
+void consultaContFecha(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     Fecha fecha;
-    bool foundContratacion;
-    int indexServicio;
-    
-    cout << "Dame la fecha" << endl;
+    bool foundServicio, foundDuplicado;
+    int serviciosFechaIndexes[totalServicios], servicioCounter = 0, servicioIndex;
+
+    cout << "Dame la fecha:" << endl;
     cin.sync();
     cin >> fecha;
-    
-    for (int i = 0; i < totalContrataciones && !foundContratacion; i++){
+
+    for (int i = 0; i < totalContrataciones; i++){
         if (contrataciones[i].getFechaContrato() == fecha){
-            servicios[i]->muestra();
-            indexServicio = i;
-            foundContratacion = true;
+            foundServicio = false;
+            for (int j = 0; j < totalServicios && !foundServicio; j++){
+                if (servicios[j]->getClave() == contrataciones[i].getClave()){
+                    foundServicio = true;
+                    foundDuplicado = false;
+                    for (int k = 0; k < totalServicios && !foundDuplicado; k++){
+                        if (j == serviciosFechaIndexes[k]){
+                            foundDuplicado = true;
+                        }
+                    }
+                    if (!foundDuplicado){
+                        serviciosFechaIndexes[servicioCounter++] = j;
+                    }
+                }
+            }
         }
     }
+
+    if (servicioCounter > 0){
+        cout << "\nDatos de los servicios con contratacion con fecha " << fecha << ':' << endl;
+        for (int i = 0; i < servicioCounter; i++){
+            servicios[serviciosFechaIndexes[i]]->muestra();
+            cout << endl;
+        }
+    }
+    else{
+        cout << "\nNo se encontraron servicios con contratacion con fecha " << fecha << endl;
+    }
+    cout << "\nPresione Enter para regresar al menu..." << flush;
+    cin.sync();
+    cin.get();
 }
 
 bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
@@ -340,7 +365,7 @@ int main()
         case 'd':
         case 'D':
         case '4':
-            consultaContFecha(contrataciones, totalContrataciones, servicios);
+            consultaContFecha(contrataciones, totalContrataciones, servicios, totalServicios);
             break;
         case 'e':
         case 'E':
