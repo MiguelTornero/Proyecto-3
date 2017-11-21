@@ -8,32 +8,32 @@ using namespace std;
 
 class Servicio {
 public:
-    Servicio();
+    //Constructores
+    Servicio();//Default
     Servicio(string, char);
-
+    //Getters y setters
     void setClave(string);
     void setTipo(char);
-
     string getClave();
     char getTipo();
-
+    //Métodos
     virtual void muestra() = 0;
     virtual double calculaCosto(int) = 0;
 protected:
     string clave;
     char tipo;
 };
-
+//Constructores
 Servicio::Servicio(){
     clave = "N/A";
     tipo = 0;
 }
-
+//Default
 Servicio::Servicio(string clave, char tipo){
     this->clave = clave;
     this->tipo = tipo;
 }
-
+//Getters y setters
 void Servicio::setClave(string clave){
     this->clave = clave;
 }
