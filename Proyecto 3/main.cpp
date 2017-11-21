@@ -15,6 +15,7 @@ using namespace std;
 
 const int MAX_CONTRATACIONES = 20, MAX_SERVICIOS = 10;
 
+//Muestra todos los datos de cada servicio
 void consultaServicios(Servicio **servicios, int tam){
     cout << "Mostrando la lista de servicios:\n" << endl;
     for (int i = 0; i < tam; i++)
@@ -26,7 +27,7 @@ void consultaServicios(Servicio **servicios, int tam){
     cin.sync();
     cin.get();
 }
-
+//Muestra la clave del servicio, asi como sus datos y el costo de la contrataci—n
 void consultaContrataciones(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     bool found;
     int indexServicio;
@@ -60,7 +61,7 @@ void consultaContrataciones(Contratacion *contrataciones, int totalContratacione
     cin.sync();
     cin.get();
 }
-
+//Permite onsultar las contrataciones de un servicio dado
 void consultaContServicio(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     bool foundContratacion = false, foundServicio = false;
     int indexServicio;
@@ -102,7 +103,7 @@ void consultaContServicio(Contratacion *contrataciones, int totalContrataciones,
     cin.sync();
     cin.get();
 }
-
+//Consulta las contrataciones de una fecha espec’fica
 void consultaContFecha(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     Fecha fecha;
     bool foundServicio, foundDuplicado;
@@ -146,7 +147,7 @@ void consultaContFecha(Contratacion *contrataciones, int totalContrataciones, Se
     cin.sync();
     cin.get();
 }
-
+//Crea una contrataci—n
 bool hacerContratacion(Contratacion *contrataciones, int totalContrataciones, Servicio **servicios, int totalServicios){
     int idCliente, diasDuracion, indexServicio;
     bool foundClave = false, isEmpresa = false, success = false;
